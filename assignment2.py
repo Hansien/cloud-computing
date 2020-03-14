@@ -21,6 +21,13 @@ from linebot.utils import PY3
 
 app = Flask(__name__)
 
+# set redis
+HOST = "redis-16080.c13.us-east-1-3.ec2.cloud.redislabs.com"
+PWD = "zxe4uRRBxbmQdukb2zR8QSdVItKyQ2uZ"
+PORT = "16080" 
+
+redis1 = redis.Redis(host = HOST, password = PWD, port = PORT)
+
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
@@ -53,32 +60,33 @@ def callback():
     except InvalidSignatureError:
         abort(400)
 
-    # if event is MessageEvent and message is TextMessage, then echo text
-    # for event in events:
-    #     if not isinstance(event, MessageEvent):
-    #         continue
-    #     if isinstance(event.message, TextMessage):
-    #         handle_TextMessage(event)
-    #     if isinstance(event.message, ImageMessage):
-    #         handle_ImageMessage(event)
-    #     if isinstance(event.message, VideoMessage):
-    #         handle_VideoMessage(event)
-    #     if isinstance(event.message, FileMessage):
-    #         handle_FileMessage(event)
-    #     if isinstance(event.message, StickerMessage):
-    #         handle_StickerMessage(event)
+    if event is MessageEvent and message is TextMessage, then echo text
+    for event in events:
+        if not isinstance(event, MessageEvent):
+            continue
+        if isinstance(event.message, TextMessage):
+            handle_TextMessage(event)
+        if isinstance(event.message, ImageMessage):
+            handle_ImageMessage(event)
+        if isinstance(event.message, VideoMessage):
+            handle_VideoMessage(event)
+        if isinstance(event.message, FileMessage):
+            handle_FileMessage(event)
+        if isinstance(event.message, StickerMessage):
+            handle_StickerMessage(event)
 
-    #     if not isinstance(event, MessageEvent):
-    #         continue
-    #     if not isinstance(event.message, TextMessage):
-    #         continue
+        if not isinstance(event, MessageEvent):
+            continue
+        if not isinstance(event.message, TextMessage):
+            continue
 
     return 'OK'
 
 # Handler function for Text Message
 def handle_TextMessage(event):
-    print(event.message.text)
-    msg = 'You said: "' + event.message.text + '" '
+    msg = redis1.get(event.message.text)
+    if !msg:
+        msg = 'No Rusult!'
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
