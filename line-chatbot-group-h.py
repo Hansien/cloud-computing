@@ -60,7 +60,7 @@ def callback():
     except InvalidSignatureError:
         abort(400)
 
-    if event is MessageEvent and message is TextMessage, then echo text
+    # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
         if not isinstance(event, MessageEvent):
             continue
