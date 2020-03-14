@@ -22,11 +22,11 @@ from linebot.utils import PY3
 app = Flask(__name__)
 
 # set redis
-HOST = "redis-16080.c13.us-east-1-3.ec2.cloud.redislabs.com"
-PWD = "zxe4uRRBxbmQdukb2zR8QSdVItKyQ2uZ"
-PORT = "16080" 
+redis_host = "redis-16080.c13.us-east-1-3.ec2.cloud.redislabs.com"
+redis_pwd = "zxe4uRRBxbmQdukb2zR8QSdVItKyQ2uZ"
+redis_port = "16080" 
 
-redis1 = redis.Redis(host = HOST, password = PWD, port = PORT)
+redis1 = redis.Redis(host = redis_host, password = redis_pwd, port = redis_port)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -84,9 +84,10 @@ def callback():
 
 # Handler function for Text Message
 def handle_TextMessage(event):
-    msg = redis1.get(event.message.text)
-    if !msg:
+    if redis1.get(event.message.text) == None:
         msg = 'No Rusult!'
+    else:
+        msg = redis1.get(event.message.text).decode()
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
