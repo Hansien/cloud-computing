@@ -88,7 +88,7 @@ def handle_TextMessage(event):
         msg = 'No Rusult, you can type "help" to get a list of commands!' 
     else:
         # query_t = str(event.message.text)
-        msg = type(event.message.text)
+        msg = str(type(event.message.text))
         # msg = redis1.get(query_t.lower()).decode()
     line_bot_api.reply_message(
         event.reply_token,
