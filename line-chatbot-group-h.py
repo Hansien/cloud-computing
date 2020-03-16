@@ -85,7 +85,7 @@ def callback():
 # Handler function for Text Message
 def handle_TextMessage(event):
     if redis1.get(event.message.text) == None:
-        msg = 'No Rusult!'
+        msg = 'No Rusult, you can type "help" to get a list of commands!' 
     else:
         msg = redis1.get(event.message.text).decode()
     line_bot_api.reply_message(
