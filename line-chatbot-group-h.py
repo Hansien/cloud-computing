@@ -120,7 +120,7 @@ def handle_TextMessage(event):
     if redis1.get(event.message.text.lower()) == None:
         msg = 'No Rusult, you can type "help" to get a list of commands!'
     elif redis1.get(event.message.text.lower()) == "CH":
-        lanFlag = CH
+        lanFlag = "CH"
     else:
         msg = redis1.get(event.message.text.lower()).decode()
 
