@@ -130,7 +130,7 @@ def handle_TextMessage(event):
     # translate module
     if lanFlag != "EN":
         text_input = {
-            "text": msg,
+            "text": "No Rusult!",
             "target": lanFlag
         }
         if isinstance(text_input, six.binary_type):
