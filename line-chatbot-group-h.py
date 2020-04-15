@@ -123,7 +123,7 @@ def handle_TextMessage(event):
 
     # Case-insensitive full keyword matching
     if redis1.get(event.message.text.lower()) == None:
-        msg = 'No Rusult, you can type "help" to get a list of commands!'
+        msg = "No Rusult, you can type \"help\" to get a list of commands!"
     else:
         msg = redis1.get(event.message.text.lower()).decode()
 
@@ -131,7 +131,7 @@ def handle_TextMessage(event):
     if lanFlag != "EN":
         text_input = {
             "text": msg,
-            "target": "CH"
+            "target": lanFlag
         }
         if isinstance(text_input, six.binary_type):
             text_input = text_input.decode('utf-8')
