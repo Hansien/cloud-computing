@@ -117,12 +117,12 @@ def handle_TextMessage(event):
     lanFlag = "EN"
 
     # Case-insensitive full keyword matching
-    if redis1.get(event.message.text.lower()) == None:
-        msg = 'No Rusult, you can type "help" to get a list of commands!'
-    elif event.message.text.lower() == "use ch":
+    if event.message.text.lower() == "use ch":
         lanFlag = "CH"
-    elif event.message.text.lower() == "use en":
+    if event.message.text.lower() == "use en":
         lanFlag = "EN"
+    elif redis1.get(event.message.text.lower()) == None:
+        msg = 'No Rusult, you can type "help" to get a list of commands!'
     else:
         msg = redis1.get(event.message.text.lower()).decode()
 
