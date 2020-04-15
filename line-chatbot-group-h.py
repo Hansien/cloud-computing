@@ -131,7 +131,7 @@ def handle_TextMessage(event):
     if lanFlag != "EN":
         text_input = {
             "text": msg,
-            "target": lanFlag
+            "target": "CH"
         }
         if isinstance(text_input, six.binary_type):
             text_input = text_input.decode('utf-8')
