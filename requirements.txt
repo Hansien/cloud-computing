@@ -2,3 +2,4 @@ flask
 redis
 line-bot-sdk
 google-cloud-core
+google-cloud-translate
