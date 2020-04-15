@@ -26,7 +26,7 @@ redis1 = redis.Redis(host = HOST, password = PWD, port = PORT)
 
 # Store data as key-value pairs
 # redis1.set('help', 'Function List: 1:New Confirmed Cases, 2:Total Cases, 3:Mask, 4:Supplies, 5:News, 6:Rumors, 7:Change Language🇨🇳/🇺🇸. Just type keywords to get the answer!')
-redis1.set('Change Language', 'Please input "use" and language code to select your language:🇨🇳: CH, 🇺🇸:EN.(EX:use CH) You can find other language code in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes!')
+# redis1.set('Change Language', 'Please input "use" and language code to select your language:🇨🇳: CH, 🇺🇸:EN.(EX:use CH) You can find other language code in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes!')
 # redis1.set('new confirmed cases', 'Added today: 7')
 # redis1.set('total cases', 'Hong Kong Epidemic Statistics-confirmed: 155, death: 4, discharged: 84, hospitalized: 159, excluded: 2330, total reported: 2645.')
 # redis1.set('mask', 'At present, you can buy masks through: Watsons: https://www.watsons.com.hk; Mannings: https://www.mannings.com.hk')
