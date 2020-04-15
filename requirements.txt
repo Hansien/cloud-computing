@@ -1,4 +1,4 @@
 flask
 redis
 line-bot-sdk
-google-cloud
+google-api-python-client
