@@ -22,8 +22,7 @@ from linebot.utils import PY3
 # set google translate api
 from google.cloud import translate_v2 as translate
 import six
-translate_client = translate.Client().from_service_account_json(
-    'google-credentials.json')
+translate_client = translate.Client().from_service_account_json('/google-credentials.json')
 
 test_input = {
     "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
