@@ -19,6 +19,29 @@ from linebot.models import (
 )
 from linebot.utils import PY3
 
+# from google.cloud import translate_v2 as translate
+# import six
+# translate_client = translate.Client()
+
+# test_input = {
+#     "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
+#     "target": "zh"
+# }
+
+
+# if isinstance(test_input, six.binary_type):
+#     test_input = test_input.decode('utf-8')
+
+# # Text can also be a sequence of strings, in which case this method
+# # will return a sequence of results for each text.
+# result = translate_client.translate(
+#     test_input['text'], target_language=test_input['target'])
+
+# print(u'Text: {}'.format(result['input']))
+# print(u'Translation: {}'.format(result['translatedText']))
+# print(u'Detected source language: {}'.format(
+#     result['detectedSourceLanguage']))
+
 app = Flask(__name__)
 
 # set redis
