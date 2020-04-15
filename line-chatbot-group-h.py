@@ -46,7 +46,7 @@ channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 
 # get google_application_credentials from environment variable
-google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None)
+# google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None)
 
 # obtain the port that heroku assigned to this app.
 heroku_port = os.getenv('PORT', None)
