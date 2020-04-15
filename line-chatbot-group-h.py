@@ -19,18 +19,28 @@ from linebot.models import (
 )
 from linebot.utils import PY3
 
+# set google translate api
+from google.cloud import translate_v2 as translate
+import six
+translate_client = translate.Client()
+# translate_client = translate.Client().from_service_account_json(JSON.parse(os.getenv('GOOGLE_CREDENTIALS', None)))
+
 app = Flask(__name__)
 
 # set redis
 redis_host = "redis-16080.c13.us-east-1-3.ec2.cloud.redislabs.com"
 redis_pwd = "zxe4uRRBxbmQdukb2zR8QSdVItKyQ2uZ"
-redis_port = "16080" 
+redis_port = "16080"
 
-redis1 = redis.Redis(host = redis_host, password = redis_pwd, port = redis_port)
+redis1 = redis.Redis(host=redis_host, password=redis_pwd, port=redis_port)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+
+# get google_application_credentials from environment variable
+google_application_credentials = os.getenv(
+    'GOOGLE_APPLICATION_CREDENTIALS', None)
 
 # obtain the port that heroku assigned to this app.
 heroku_port = os.getenv('PORT', None)
@@ -82,19 +92,60 @@ def callback():
 
     return 'OK'
 
+# test_input = {
+#     "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
+#     "target": "zh"
+# }
+
+# if isinstance(test_input, six.binary_type):
+#     test_input = test_input.decode('utf-8')
+
+# Text can also be a sequence of strings, in which case this method
+# will return a sequence of results for each text.
+# result = translate_client.translate(
+#     test_input['text'], target_language=test_input['target'])
+
+# print(u'Text: {}'.format(result['input']))
+# print(u'Translation: {}'.format(result['translatedText']))
+# print(u'Detected source language: {}'.format(
+#     result['detectedSourceLanguage']))
+
 # Handler function for Text Message
+
+lanFlag = "EN"
+
 def handle_TextMessage(event):
+    global lanFlag
+    if event.message.text.lower() == "use zh":
+        lanFlag = "ZH"
+    elif event.message.text.lower() == "use en":
+        lanFlag = "EN"
+
     # Case-insensitive full keyword matching
     if redis1.get(event.message.text.lower()) == None:
-        msg = 'No Rusult, you can type "help" to get a list of commands!' 
+        msg = "No Rusult, you can type \"help\" to get a list of commands!"
     else:
         msg = redis1.get(event.message.text.lower()).decode()
+
+    # translate module
+    if lanFlag != "EN":
+        text_input = {
+            "text": msg,
+            "target": lanFlag
+        }
+        if isinstance(text_input, six.binary_type):
+            text_input = text_input.decode('utf-8')
+        result = translate_client.translate(
+            text_input['text'], target_language=text_input['target'])
+        msg = result['translatedText']
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
     )
 
 # Handler function for Sticker Message
+
+
 def handle_StickerMessage(event):
     line_bot_api.reply_message(
         event.reply_token,
@@ -104,25 +155,32 @@ def handle_StickerMessage(event):
     )
 
 # Handler function for Image Message
+
+
 def handle_ImageMessage(event):
     line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice image!")
+        event.reply_token,
+        TextSendMessage(text="Nice image!")
     )
 
 # Handler function for Video Message
+
+
 def handle_VideoMessage(event):
     line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice video!")
+        event.reply_token,
+        TextSendMessage(text="Nice video!")
     )
 
 # Handler function for File Message
+
+
 def handle_FileMessage(event):
     line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice file!")
+        event.reply_token,
+        TextSendMessage(text="Nice file!")
     )
+
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
