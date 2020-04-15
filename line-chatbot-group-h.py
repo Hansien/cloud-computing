@@ -19,28 +19,18 @@ from linebot.models import (
 )
 from linebot.utils import PY3
 
-# from google.cloud import translate_v2 as translate
-# import six
-# translate_client = translate.Client()
+# set google translate api
+from google.cloud import translate_v2 as translate
+import six
+translate_client = translate.Client()
 
-# test_input = {
-#     "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
-#     "target": "zh"
-# }
+test_input = {
+    "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
+    "target": "zh"
+}
 
-
-# if isinstance(test_input, six.binary_type):
-#     test_input = test_input.decode('utf-8')
-
-# # Text can also be a sequence of strings, in which case this method
-# # will return a sequence of results for each text.
-# result = translate_client.translate(
-#     test_input['text'], target_language=test_input['target'])
-
-# print(u'Text: {}'.format(result['input']))
-# print(u'Translation: {}'.format(result['translatedText']))
-# print(u'Detected source language: {}'.format(
-#     result['detectedSourceLanguage']))
+if isinstance(test_input, six.binary_type):
+    test_input = test_input.decode('utf-8')
 
 app = Flask(__name__)
 
@@ -54,6 +44,9 @@ redis1 = redis.Redis(host = redis_host, password = redis_pwd, port = redis_port)
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+
+# get google_application_credentials from environment variable
+google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None)
 
 # obtain the port that heroku assigned to this app.
 heroku_port = os.getenv('PORT', None)
@@ -105,13 +98,24 @@ def callback():
 
     return 'OK'
 
+# Text can also be a sequence of strings, in which case this method
+# will return a sequence of results for each text.
+result = translate_client.translate(
+    test_input['text'], target_language=test_input['target'])
+
+print(u'Text: {}'.format(result['input']))
+print(u'Translation: {}'.format(result['translatedText']))
+print(u'Detected source language: {}'.format(
+    result['detectedSourceLanguage']))
+
 # Handler function for Text Message
 def handle_TextMessage(event):
     # Case-insensitive full keyword matching
     if redis1.get(event.message.text.lower()) == None:
         msg = 'No Rusult, you can type "help" to get a list of commands!' 
     else:
-        msg = redis1.get(event.message.text.lower()).decode()
+        msg = result['input']
+        # msg = redis1.get(event.message.text.lower()).decode()
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
