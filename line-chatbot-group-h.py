@@ -115,7 +115,7 @@ def callback():
 lanFlag = "EN"
 
 def handle_TextMessage(event):
-
+    global lanFlag
     if event.message.text.lower() == "use zh":
         lanFlag = "ZH"
     elif event.message.text.lower() == "use en":
