@@ -116,8 +116,8 @@ def callback():
 def handle_TextMessage(event):
     lanFlag = "EN"
 
-    if event.message.text.lower() == "use ch":
-        lanFlag = "CH"
+    if event.message.text.lower() == "use zh":
+        lanFlag = "ZH"
     elif event.message.text.lower() == "use en":
         lanFlag = "EN"
 
@@ -130,7 +130,7 @@ def handle_TextMessage(event):
     # translate module
     if lanFlag != "EN":
         text_input = {
-            "text": "No Rusult!",
+            "text": msg,
             "target": lanFlag
         }
         if isinstance(text_input, six.binary_type):
