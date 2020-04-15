@@ -25,14 +25,6 @@ import six
 translate_client = translate.Client()
 # translate_client = translate.Client().from_service_account_json(JSON.parse(os.getenv('GOOGLE_CREDENTIALS', None)))
 
-test_input = {
-    "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
-    "target": "zh"
-}
-
-if isinstance(test_input, six.binary_type):
-    test_input = test_input.decode('utf-8')
-
 app = Flask(__name__)
 
 # set redis
@@ -100,27 +92,49 @@ def callback():
 
     return 'OK'
 
+# test_input = {
+#     "text": "So let us begin anew--remembering on both sides that civility is not a sign of weakness, and sincerity is always subject to proof. Let us never negotiate out of fear. But let us never fear to negotiate.",
+#     "target": "zh"
+# }
+
+# if isinstance(test_input, six.binary_type):
+#     test_input = test_input.decode('utf-8')
 
 # Text can also be a sequence of strings, in which case this method
 # will return a sequence of results for each text.
-result = translate_client.translate(
-    test_input['text'], target_language=test_input['target'])
+# result = translate_client.translate(
+#     test_input['text'], target_language=test_input['target'])
 
-print(u'Text: {}'.format(result['input']))
-print(u'Translation: {}'.format(result['translatedText']))
-print(u'Detected source language: {}'.format(
-    result['detectedSourceLanguage']))
+# print(u'Text: {}'.format(result['input']))
+# print(u'Translation: {}'.format(result['translatedText']))
+# print(u'Detected source language: {}'.format(
+#     result['detectedSourceLanguage']))
 
 # Handler function for Text Message
 
 
 def handle_TextMessage(event):
+    lanFlag = "EN"
+
     # Case-insensitive full keyword matching
     if redis1.get(event.message.text.lower()) == None:
         msg = 'No Rusult, you can type "help" to get a list of commands!'
+    else if redis1.get(event.message.text.lower()) == "CH":
+        lanFlag = CH
     else:
-        msg = result['input']
-        # msg = redis1.get(event.message.text.lower()).decode()
+        msg = redis1.get(event.message.text.lower()).decode()
+
+    # translate module
+    if lanFlag != "EN":
+        text_input = {
+            "text": msg,
+            "target": lanFlag
+        }
+        if isinstance(text_input, six.binary_type):
+            text_input = text_input.decode('utf-8')
+        result = translate_client.translate(
+            text_input['text'], target_language=text_input['target'])
+        msg = result['translatedText']
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(msg)
