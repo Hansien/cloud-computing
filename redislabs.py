@@ -26,7 +26,7 @@ redis1 = redis.Redis(host = HOST, password = PWD, port = PORT)
 
 # Store data as key-value pairs
 # redis1.set('help', 'Function List: 1:New Confirmed Cases, 2:Total Cases, 3:Mask, 4:Supplies, 5:News, 6:Rumors, 7:Change Language🇨🇳/🇺🇸. Just type keywords to get the answer!')
-redis1.set('change language', 'Please input \"use\" and language code to select your language:🇨🇳: ZH, 🇺🇸:EN.(EX:use ZH) You can find other language code in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes!')
+# redis1.set('change language', 'Please input \"use\" and language code to select your language:🇨🇳: ZH, 🇺🇸:EN.(EX:use ZH) You can find other language code in https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes!')
 # redis1.set('new confirmed cases', 'Added today: 7')
 # redis1.set('total cases', 'Hong Kong Epidemic Statistics-confirmed: 155, death: 4, discharged: 84, hospitalized: 159, excluded: 2330, total reported: 2645.')
 # redis1.set('mask', 'At present, you can buy masks through: Watsons: https://www.watsons.com.hk; Mannings: https://www.mannings.com.hk')
@@ -35,3 +35,10 @@ redis1.set('change language', 'Please input \"use\" and language code to select 
 # redis1.set('rumors', 'Extensive exercise during the outbreak can increase resistance? fake!')
 # print(redis1.get('Change Language').decode())
 # print(redis1.get('xxx') == None)
+
+redis1.set('new confirmed cases', 'Added today: 0')
+redis1.set('total cases', 'Hong Kong Epidemic Statistics-confirmed: 1038, death: 4, discharged: 846, hospitalized: 188, number of tests: 154989.')
+redis1.set('mask', 'At present, you can buy masks through: Watsons: https://www.watsons.com.hk; Mannings: https://www.mannings.com.hk')
+redis1.set('supplies', 'Nucleic acid detection kit:http://www.liferiver.com.cn/newsinfor/p13_205.html?&pageid=13&_id=205&r=0')
+redis1.set('news', 'There are no newly confirmed cases in Hong Kong today. It is the fifth consecutive day of zero diagnosis. The CHP will not hold a press conference in the afternoon!')
+redis1.set('rumors', 'Extensive exercise during the outbreak can increase resistance? fake!')
